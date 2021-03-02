@@ -13,6 +13,7 @@ jobs:
 
       - name: build image
         run: |
+          docker info
           docker build --file './Dockerfile' . --tag 'cautious-chainsaw/mssql-server-windows-developer:winsrv1809-sql2019'
       
       - name: run container
