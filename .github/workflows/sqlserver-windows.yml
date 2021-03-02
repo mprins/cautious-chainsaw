@@ -13,11 +13,11 @@ jobs:
 
       - name: build image
         run: |
-          docker build --file ./Dockerfile --tag cautious-chainsaw/mssql-server-windows-developer:winsrv1809-sql2019
+          docker build --file './Dockerfile' . --tag 'cautious-chainsaw/mssql-server-windows-developer:winsrv1809-sql2019'
       
       - name: run container
         run: |
-          docker run -rm --name SQL2019 -e ACCEPT_EULA=Y -e sa_password="Password12!" -p 1433:1433 -d cautious-chainsaw/mssql-server-windows-developer:winsrv1809-sql2019
-          docker exec -i SQL2019 /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "Password12!" -Q 'CREATE DATABASE testingwindows' -d "master"
+          docker run -rm --name SQL2019 -e ACCEPT_EULA=Y -e sa_password='Password12!' -p '1433:1433' -d 'cautious-chainsaw/mssql-server-windows-developer:winsrv1809-sql2019'
+          docker exec -i SQL2019 /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'Password12!' -Q 'CREATE DATABASE testingwindows' -d 'master'
           
       
