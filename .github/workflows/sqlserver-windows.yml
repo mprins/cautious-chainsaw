@@ -13,13 +13,18 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: inspect befor
+      - name: inspect before cache restore
         run: |
-          ls -l C:\ProgramData\docker
+          ls -l C:\ProgramData\docker\image
       
-      - uses: satackey/action-docker-layer-caching@v0.0.11
-        continue-on-error: true
+      # storing cache takes a really long time... probably not worth it
+      #- uses: satackey/action-docker-layer-caching@v0.0.11
+      #  continue-on-error: true
 
+      - name: inspect after cache restore
+        run: |
+          ls -l C:\ProgramData\docker\image
+          
       - name: build image
         run: |
           docker info
