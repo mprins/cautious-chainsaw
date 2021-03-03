@@ -13,22 +13,26 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: inspect before cache restore
-        run: |
-          ls -l C:\ProgramData\docker\image
+      #- name: inspect before cache restore
+      #  run: |
+      #    ls -l C:\ProgramData\docker\image
       
       # storing cache takes a really long time... probably not worth it
       #- uses: satackey/action-docker-layer-caching@v0.0.11
       #  continue-on-error: true
 
-      - name: inspect after cache restore
-        run: |
-          ls -l C:\ProgramData\docker\image
+      #- name: inspect after cache restore
+      #  run: |
+      #    ls -l C:\ProgramData\docker\image
+         
+      # TODO
+      - name: docker registry login
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login docker.b3p.nl -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
           
       - name: build image
         run: |
           docker info
-          docker build --file './Dockerfile' . --tag 'cautious-chainsaw/mssql-server-windows-developer:winsrv1809-sql2019'
+          docker build --file './Dockerfile' . --tag 'docker.b3p.nl/mssql-server-windows-developer:winsrv1809-sql2019'
       
       - name: start container
         run: |
@@ -37,8 +41,9 @@ jobs:
       - name: test container
         run: |
           docker logs SQL2019
-          docker inspect -f {{.State.Running}} SQL2019
-          docker inspect -f {{.State.Health}} SQL2019
+          docker ps
+          docker inspect -f='{{json .State.Running}}' SQL2019
+          docker inspect -f='{{json .State.Health}}' SQL2019
           docker exec -i SQL2019 sqlcmd -S localhost -U SA -P 'Password12!' -Q 'CREATE DATABASE testingwindows' -d 'master'
           docker exec -i SQL2019 sqlcmd -S localhost -U SA -P 'Password12!' -Q 'SELECT @@version' -d 'testingwindows'
       
@@ -47,5 +52,9 @@ jobs:
           docker logs SQL2019
           ls -l C:\ProgramData\docker
           docker stop SQL2019
+          
+      - name: push image
+        run: |
+          docker push 'docker.b3p.nl/cautious-chainsaw/mssql-server-windows-developer:winsrv1809-sql2019'
           
       
