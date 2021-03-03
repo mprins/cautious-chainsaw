@@ -36,7 +36,7 @@ jobs:
       
       - name: start container
         run: |
-          docker run --rm --name SQL2019 -e ACCEPT_EULA=Y -e sa_password='Password12!' -p '1433:1433' -d 'cautious-chainsaw/mssql-server-windows-developer:winsrv1809-sql2019'
+          docker run --rm --name SQL2019 -e ACCEPT_EULA=Y -e sa_password='Password12!' -p '1433:1433' -d 'docker.b3p.nl/cautious-chainsaw/mssql-server-windows-developer:winsrv1809-sql2019'
       
       - name: test container
         run: |
