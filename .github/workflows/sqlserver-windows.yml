@@ -13,44 +13,29 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      #- name: inspect before cache restore
-      #  run: |
-      #    ls -l C:\ProgramData\docker\image
-      
-      # storing cache takes a really long time... probably not worth it
-      #- uses: satackey/action-docker-layer-caching@v0.0.11
-      #  continue-on-error: true
-
-      #- name: inspect after cache restore
-      #  run: |
-      #    ls -l C:\ProgramData\docker\image
-         
-      # TODO
       - name: docker registry login
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login docker.b3p.nl -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
           
       - name: build image
         run: |
           docker info
-          docker build --file './Dockerfile' . --tag 'docker.b3p.nl/mssql-server-windows-developer:winsrv1809-sql2019'
+          docker build --file './Dockerfile' . --tag 'docker.b3p.nl/cautious-chainsaw/mssql-server-windows-developer:winsrv1809-sql2019'
       
       - name: start container
         run: |
-          docker run --rm --name SQL2019 -e ACCEPT_EULA=Y -e sa_password='Password12!' -p '1433:1433' -d 'cautious-chainsaw/mssql-server-windows-developer:winsrv1809-sql2019'
+          docker run --rm --name SQL2019 -e ACCEPT_EULA=Y -e sa_password='Password12!' -p '1433:1433' -d 'docker.b3p.nl/cautious-chainsaw/mssql-server-windows-developer:winsrv1809-sql2019'
       
       - name: test container
         run: |
           docker logs SQL2019
           docker ps
+          echo "Container running? "
           docker inspect -f='{{json .State.Running}}' SQL2019
+          echo "Container health: "
           docker inspect -f='{{json .State.Health}}' SQL2019
           docker exec -i SQL2019 sqlcmd -S localhost -U SA -P 'Password12!' -Q 'CREATE DATABASE testingwindows' -d 'master'
           docker exec -i SQL2019 sqlcmd -S localhost -U SA -P 'Password12!' -Q 'SELECT @@version' -d 'testingwindows'
-      
-      - name: inspect after
-        run: |
           docker logs SQL2019
-          ls -l C:\ProgramData\docker
           docker stop SQL2019
           
       - name: push image
