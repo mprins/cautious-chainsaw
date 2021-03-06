@@ -23,7 +23,7 @@ jobs:
       
       - name: start container
         run: |
-          docker run --rm --name SQL2019 -e ACCEPT_EULA=Y -e sa_password='Password12!' -p '1433:1433' -d 'docker.b3p.nl/cautious-chainsaw/mssql-server-windows-developer:winsrv1809-sql2019'
+          docker run --rm --name SQL2019 -e ACCEPT_EULA=Y -e sa_password='Password12!' -p '1433:1433' -d 'docker.b3p.nl/cautious-chainsaw/mssql-server-windows-developer:ltsc2019-sql2019'
       
       - name: test container
         run: |
@@ -35,11 +35,12 @@ jobs:
           docker inspect -f='{{json .State.Health}}' SQL2019
           docker exec -i SQL2019 sqlcmd -S localhost -U SA -P 'Password12!' -Q 'CREATE DATABASE testingwindows' -d 'master'
           docker exec -i SQL2019 sqlcmd -S localhost -U SA -P 'Password12!' -Q 'SELECT @@version' -d 'testingwindows'
+          docker exec -i SQL2019 ls -l 'C:/*.sql'
           docker logs SQL2019
           docker stop SQL2019
           
       - name: push image
         run: |
-          docker push 'docker.b3p.nl/cautious-chainsaw/mssql-server-windows-developer:winsrv1809-sql2019'
+          docker push 'docker.b3p.nl/cautious-chainsaw/mssql-server-windows-developer:ltsc2019-sql2019'
           
       

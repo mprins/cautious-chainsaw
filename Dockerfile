@@ -1,6 +1,6 @@
 # 2020-05-11 GL
 #
-FROM mcr.microsoft.com/windows/servercore:1809
+FROM mcr.microsoft.com/windows/servercore:ltsc2019
 
 LABEL maintainer "mark"
 
