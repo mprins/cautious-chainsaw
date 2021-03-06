@@ -2,7 +2,7 @@
 #
 FROM mcr.microsoft.com/windows/servercore:1809
 
-LABEL maintainer "Gert Lynge"
+LABEL maintainer "mark"
 
 # Download Links:
 ENV exe "https://download.microsoft.com/download/7/c/1/7c14e92e-bdcb-4f89-b7cf-93543e7112d1/SQLServer2019-DEV-x64-ENU.exe"
@@ -16,8 +16,8 @@ ENV sa_password="_" \
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 
 # make install files accessible
-COPY start.ps1 /
-COPY init.sql /
+COPY start.ps1 init.sql /
+
 WORKDIR /
 
 RUN Invoke-WebRequest -Uri $env:box -OutFile SQL.box ; \
