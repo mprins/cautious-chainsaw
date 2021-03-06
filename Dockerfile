@@ -17,6 +17,7 @@ SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPref
 
 # make install files accessible
 COPY start.ps1 /
+COPY init.sql /
 WORKDIR /
 
 RUN Invoke-WebRequest -Uri $env:box -OutFile SQL.box ; \
