@@ -1,10 +1,9 @@
-# 2020-05-11 GL
-#
-FROM mcr.microsoft.com/windows/servercore:ltsc2019
+ARG WINDOWS_TAG=ltsc2019
+FROM mcr.microsoft.com/windows/servercore:${WINDOWS_TAG}
 
 LABEL maintainer "mark"
 
-# Download Links:
+# Download Links Release.2019-11-04 :
 ENV exe "https://download.microsoft.com/download/7/c/1/7c14e92e-bdcb-4f89-b7cf-93543e7112d1/SQLServer2019-DEV-x64-ENU.exe"
 ENV box "https://download.microsoft.com/download/7/c/1/7c14e92e-bdcb-4f89-b7cf-93543e7112d1/SQLServer2019-DEV-x64-ENU.box"
 

@@ -1,6 +1,4 @@
-# 2020-05-11 GL
-
-# The script sets the sa password and start the SQL Service
+# The script sets the sa password and starts the SQL Service
 # Also it attaches additional database from the disk
 # The format for attach_dbs
 
@@ -17,8 +15,8 @@ param(
 
 if($ACCEPT_EULA -ne "Y" -And $ACCEPT_EULA -ne "y")
 {
-	Write-Verbose "ERROR: You must accept the End User License Agreement before this container can start."
-	Write-Verbose "Set the environment variable ACCEPT_EULA to 'Y' if you accept the agreement."
+    Write-Verbose "ERROR: You must accept the End User License Agreement before this container can start."
+    Write-Verbose "Set the environment variable ACCEPT_EULA to 'Y' if you accept the agreement."
 
     exit 1
 }
@@ -50,7 +48,7 @@ $dbs = $attach_dbs_cleaned | ConvertFrom-Json
 if ($null -ne $dbs -And $dbs.Length -gt 0)
 {
     Write-Verbose "Attaching $($dbs.Length) database(s)"
-	    
+        
     Foreach($db in $dbs) 
     {            
         $files = @();
@@ -64,7 +62,7 @@ if ($null -ne $dbs -And $dbs.Length -gt 0)
 
         Write-Verbose "Invoke-Sqlcmd -Query $($sqlcmd)"
         & sqlcmd -Q $sqlcmd
-	}
+    }
 }
 
 Write-Verbose "Started SQL Server."
@@ -72,7 +70,7 @@ Write-Verbose "Started SQL Server."
 $lastCheck = (Get-Date).AddSeconds(-2) 
 while ($true) 
 { 
-    Get-EventLog -LogName Application -Source "MSSQL*" -After $lastCheck | Select-Object TimeGenerated, EntryType, Message	 
+    Get-EventLog -LogName Application -Source "MSSQL*" -After $lastCheck | Select-Object TimeGenerated, EntryType, Message   
     $lastCheck = Get-Date 
     Start-Sleep -Seconds 2 
 }

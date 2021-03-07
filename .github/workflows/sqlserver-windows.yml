@@ -1,29 +1,40 @@
-name: Windows
+name: Windows build
+
 
 on:
   workflow_dispatch:
+    inputs:
+      WINDOWS_TAG:
+        description: 'Windows tag'
+        default: 'ltsc2019'
+        required: true
+        # ${{ github.event.inputs.WINDOWS_TAG }}
   push:
   pull_request:
   
 jobs:
   build:
-    name: MS SQL build
+    name: MS SQL build ${{ matrix.WINDOWS_TAG }}
     runs-on: windows-2019
+    strategy:
+      matrix:
+        WINDOWS_TAG: [ "ltsc2019" ]
         
     steps:
       - uses: actions/checkout@v2
 
       - name: docker registry login
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login docker.b3p.nl -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-          
-      - name: build image
         run: |
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login docker.b3p.nl -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
           docker info
-          docker build --file './Dockerfile' . --tag 'docker.b3p.nl/cautious-chainsaw/mssql-server-windows-developer:winsrv1809-sql2019'
+          
+      - name: build image for ${{ matrix.WINDOWS_TAG }}
+        run: |
+          docker build --file './Dockerfile' . --build-arg "WINDOWS_TAG=${{ matrix.WINDOWS_TAG }}" --tag 'docker.b3p.nl/cautious-chainsaw/mssql-server-windows-developer:"${{ matrix.WINDOWS_TAG }}"-sql2019'
       
       - name: start container
         run: |
-          docker run --rm --name SQL2019 -e ACCEPT_EULA=Y -e sa_password='Password12!' -p '1433:1433' -d 'docker.b3p.nl/cautious-chainsaw/mssql-server-windows-developer:ltsc2019-sql2019'
+          docker run --rm --name SQL2019 -e ACCEPT_EULA=Y -e sa_password='Password12!' -p '1433:1433' -d 'docker.b3p.nl/cautious-chainsaw/mssql-server-windows-developer:"${{ matrix.WINDOWS_TAG }}"-sql2019'
       
       - name: test container
         run: |
@@ -41,6 +52,6 @@ jobs:
           
       - name: push image
         run: |
-          docker push 'docker.b3p.nl/cautious-chainsaw/mssql-server-windows-developer:ltsc2019-sql2019'
+          docker push 'docker.b3p.nl/cautious-chainsaw/mssql-server-windows-developer:${{ matrix.tag }}-sql2019'
           
       
