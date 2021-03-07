@@ -4,11 +4,11 @@ updates:
   directory: "/"
   schedule:
     interval: "weekly"
-    day: "saturday"
-    time: "04:00"
+    day: "sunday"
+    time: "17:00"
     timezone: "Europe/Amsterdam"
   open-pull-requests-limit: 25
-  target-branch: master
+  target-branch: main
   assignees:
     - "mprins"
   reviewers:
