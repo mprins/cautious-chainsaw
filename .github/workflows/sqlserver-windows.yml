@@ -1,4 +1,4 @@
-name: Windows build
+name: Windows
 
 on:
 #  workflow_dispatch:
@@ -9,11 +9,11 @@ on:
 #        required: true
 #        # ${{ github.event.inputs.WINDOWS_TAG }}
   push:
-  pull_request:
+#  pull_request:
 
 jobs:
   build:
-    name: MS SQL build ${{ matrix.WINDOWS_TAG }}
+    name: SQL Server 2019 dev build
     runs-on: windows-2019
     strategy:
       matrix:
@@ -22,13 +22,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: docker registry login
-        run: |
-          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login docker.b3p.nl -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-          docker info
-
       - name: build image for ${{ matrix.WINDOWS_TAG }}
         run: |
+          docker info
           docker build --file './Dockerfile' . --build-arg "WINDOWS_TAG=${{ matrix.WINDOWS_TAG }}" --tag 'docker.b3p.nl/cautious-chainsaw/mssql-server-windows-developer:"${{ matrix.WINDOWS_TAG }}"-sql2019'
 
       - name: start container
@@ -45,12 +41,14 @@ jobs:
           docker inspect -f='{{json .State.Health}}' SQL2019
           docker exec -i SQL2019 sqlcmd -S localhost -U SA -P 'Password12!' -Q 'CREATE DATABASE testingwindows' -d 'master'
           docker exec -i SQL2019 sqlcmd -S localhost -U SA -P 'Password12!' -Q 'SELECT @@version' -d 'testingwindows'
-          docker exec -i SQL2019 dir 'C:\*.sql'
+          docker exec -i SQL2019 cmd /c dir 'C:\'
           docker logs SQL2019
           docker stop SQL2019
 
-      - name: push image ${{ matrix.WINDOWS_TAG }}
+      - name: docker registry login and push image ${{ matrix.WINDOWS_TAG }}
+        if: ${{ github.ref == 'refs/heads/main' }}
         run: |
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login docker.b3p.nl -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
           docker push 'docker.b3p.nl/cautious-chainsaw/mssql-server-windows-developer:"${{ matrix.WINDOWS_TAG }}"-sql2019'
 
 
