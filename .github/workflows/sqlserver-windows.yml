@@ -1,7 +1,7 @@
 name: Windows
 
 on:
-#  workflow_dispatch:
+  workflow_dispatch:
 #    inputs:
 #      WINDOWS_TAG:
 #        description: 'Windows tag'
@@ -10,6 +10,8 @@ on:
 #        # ${{ github.event.inputs.WINDOWS_TAG }}
   push:
 #  pull_request:
+  schedule:
+  - cron: "17 4 * * 7"
 
 jobs:
   build:
