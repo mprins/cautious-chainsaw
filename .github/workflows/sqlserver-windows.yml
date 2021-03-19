@@ -2,14 +2,8 @@ name: Windows
 
 on:
   workflow_dispatch:
-#    inputs:
-#      WINDOWS_TAG:
-#        description: 'Windows tag'
-#        default: 'ltsc2019'
-#        required: true
-#        # ${{ github.event.inputs.WINDOWS_TAG }}
   push:
-#  pull_request:
+  pull_request:
   schedule:
     - cron: "17 4 * * SUN"
 

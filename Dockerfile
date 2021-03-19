@@ -1,19 +1,21 @@
+# use core image from https://hub.docker.com/_/microsoft-windows-servercore
 ARG WINDOWS_TAG=ltsc2019
 FROM mcr.microsoft.com/windows/servercore:${WINDOWS_TAG}
 
-# Download Links Release.2019-11-04 :
+# Download Links v 15.0.2000.20200604 :
 ENV exe "https://download.microsoft.com/download/7/c/1/7c14e92e-bdcb-4f89-b7cf-93543e7112d1/SQLServer2019-DEV-x64-ENU.exe"
 ENV box "https://download.microsoft.com/download/7/c/1/7c14e92e-bdcb-4f89-b7cf-93543e7112d1/SQLServer2019-DEV-x64-ENU.box"
-# originally
-# ENV exe "https://go.microsoft.com/fwlink/?linkid=840945"
-# ENV box "https://go.microsoft.com/fwlink/?linkid=840944"
+# see eg https://chocolatey.org/packages/sql-server-2019 for these bucket urls
+#
+# downloader tool: https://go.microsoft.com/fwlink/?linkid=866662
+#
 
 ENV sa_password="_" \
     attach_dbs="[]" \
     ACCEPT_EULA="_" \
     sa_password_path="C:\ProgramData\Docker\secrets\sa-password"
 
-LABEL maintainer="mprins" description="Windows Server Core ${WINDOWS_TAG} with SQL Server developer ed. 2019 (2019-11-04)" version="${WINDOWS_TAG}"
+LABEL maintainer="mprins" description="Windows Server Core ${WINDOWS_TAG} with SQL Server developer ed. 2019" version="${WINDOWS_TAG}"
 
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 
