@@ -2,7 +2,7 @@
 ARG WINDOWS_TAG=ltsc2019
 FROM mcr.microsoft.com/windows/servercore:${WINDOWS_TAG}
 
-# Download Links v 15.0.2000.20200604 :
+# Download Links v 15.0.2000.20210324 :
 ENV exe "https://download.microsoft.com/download/7/c/1/7c14e92e-bdcb-4f89-b7cf-93543e7112d1/SQLServer2019-DEV-x64-ENU.exe"
 ENV box "https://download.microsoft.com/download/7/c/1/7c14e92e-bdcb-4f89-b7cf-93543e7112d1/SQLServer2019-DEV-x64-ENU.box"
 # see eg https://chocolatey.org/packages/sql-server-2019 for these bucket urls
