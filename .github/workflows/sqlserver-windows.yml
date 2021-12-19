@@ -10,10 +10,15 @@ on:
 jobs:
   build:
     name: SQL Server 2019 dev build
-    runs-on: windows-2019
+    runs-on: ${{ matrix.WINDOWS_OS }}
     strategy:
       matrix:
-        WINDOWS_TAG: [ "ltsc2019" ]
+        include:
+        - WINDOWS_OS: "windows-2019"
+          WINDOWS_TAG: "ltsc2019"
+
+        - WINDOWS_OS: "windows-2020"
+          WINDOWS_TAG: "ltsc2022" 
 
     steps:
       - uses: actions/checkout@v2
