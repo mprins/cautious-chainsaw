@@ -13,3 +13,17 @@ updates:
     - "mprins"
   reviewers:
     - "mprins"
+
+version: 2
+updates:
+- package-ecosystem: "github-actions"
+  directory: "/"
+  schedule:
+    interval: "weekly"
+    day: saturday
+  labels:
+  - build-infra
+  assignees:
+    - "mprins"
+  reviewers:
+    - "mprins"
