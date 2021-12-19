@@ -20,7 +20,6 @@ updates:
   directory: "/"
   schedule:
     interval: "weekly"
-    day: saturday
   labels:
   - build-infra
   assignees:
