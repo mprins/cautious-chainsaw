@@ -17,7 +17,7 @@ jobs:
         - WINDOWS_OS: "windows-2019"
           WINDOWS_TAG: "ltsc2019"
 
-        - WINDOWS_OS: "windows-2020"
+        - WINDOWS_OS: "windows-2022"
           WINDOWS_TAG: "ltsc2022" 
 
     steps:
