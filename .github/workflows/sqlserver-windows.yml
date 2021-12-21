@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    name: SQL Server 2019 dev build
+    name: SQL Server 2019 dev build for ${{ matrix.WINDOWS_OS }}
     runs-on: ${{ matrix.WINDOWS_OS }}
     strategy:
       matrix:
