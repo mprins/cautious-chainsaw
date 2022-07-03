@@ -1,5 +1,5 @@
 # cautious-chainsaw
-sql server experiment
+sql server windows image
 
 implements:
 
