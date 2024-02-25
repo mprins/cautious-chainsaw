@@ -14,11 +14,11 @@ jobs:
     strategy:
       matrix:
         include:
-        - WINDOWS_OS: "windows-2019"
-          WINDOWS_TAG: "ltsc2019"
+        - WINDOWS_OS: 'windows-2019'
+          WINDOWS_TAG: 'ltsc2019'
 
-        - WINDOWS_OS: "windows-2022"
-          WINDOWS_TAG: "ltsc2022" 
+        - WINDOWS_OS: 'windows-2022'
+          WINDOWS_TAG: 'ltsc2022'
 
     steps:
       - uses: actions/checkout@v4
