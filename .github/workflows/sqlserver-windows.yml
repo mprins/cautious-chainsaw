@@ -12,13 +12,14 @@ jobs:
     name: SQL Server 2019 dev build for ${{ matrix.WINDOWS_OS }}
     runs-on: ${{ matrix.WINDOWS_OS }}
     strategy:
+      fail-fast: false
       matrix:
         include:
-        - WINDOWS_OS: 'windows-2019'
-          WINDOWS_TAG: 'ltsc2019'
+        - WINDOWS_OS: windows-2019
+          WINDOWS_TAG: ltsc2019
 
-        - WINDOWS_OS: 'windows-2022'
-          WINDOWS_TAG: 'ltsc2022'
+        - WINDOWS_OS: windows-2022
+          WINDOWS_TAG: ltsc2022
 
     steps:
       - uses: actions/checkout@v4
@@ -26,11 +27,11 @@ jobs:
       - name: build image for ${{ matrix.WINDOWS_TAG }}
         run: |
           docker info
-          docker build --file './Dockerfile' . --build-arg "WINDOWS_TAG=${{ matrix.WINDOWS_TAG }}" --tag 'docker.b3p.nl/cautious-chainsaw/mssql-server-windows-developer:"${{ matrix.WINDOWS_TAG }}"-sql2019'
+          docker build --file './Dockerfile' . --build-arg "WINDOWS_TAG=${{ matrix.WINDOWS_TAG }}" --tag 'docker.b3p.nl/cautious-chainsaw/mssql-server-windows-developer:${{ matrix.WINDOWS_TAG }}-sql2019'
 
       - name: start container
         run: |
-          docker run --rm --name SQL2019 -e ACCEPT_EULA=Y -e sa_password='Password12!' -p '1433:1433' -d 'docker.b3p.nl/cautious-chainsaw/mssql-server-windows-developer:"${{ matrix.WINDOWS_TAG }}"-sql2019'
+          docker run --rm --name SQL2019 -e ACCEPT_EULA=Y -e sa_password='Password12!' -p '1433:1433' -d 'docker.b3p.nl/cautious-chainsaw/mssql-server-windows-developer:${{ matrix.WINDOWS_TAG }}-sql2019'
 
       - name: test container
         run: |
