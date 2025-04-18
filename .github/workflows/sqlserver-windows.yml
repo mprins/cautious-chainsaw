@@ -15,8 +15,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-        - WINDOWS_OS: windows-2019
-          WINDOWS_TAG: ltsc2019
+        - WINDOWS_OS: windows-2025
+          WINDOWS_TAG: ltsc2025
 
         - WINDOWS_OS: windows-2022
           WINDOWS_TAG: ltsc2022
