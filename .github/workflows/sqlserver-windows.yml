@@ -22,7 +22,7 @@ jobs:
           WINDOWS_TAG: ltsc2022
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: build image for ${{ matrix.WINDOWS_TAG }}
         run: |
